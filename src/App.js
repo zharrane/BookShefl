@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from "react"
-import * as BooksAPI from "./BooksAPI"
 import "./App.css"
 import Shelf from "./components/Shelf"
 import { Link } from "react-router-dom"
+import { useBooksFetch } from "./hooks/useBooksFetch"
 
 const App = () => {
+  const { state, loading, error } = useBooksFetch()
   const shelves = [
-    { id: 1, shelfTitle: "Currently reading", books: [] },
-    { id: 2, shelfTitle: "Want to read", books: [] },
-    { id: 3, shelfTitle: "Read", books: [] },
+    {
+      id: 1,
+      loading,
+      error,
+      shelfTitle: "Currently reading",
+      books: state.results.filter((book) => book.shelf === "currentlyReading"),
+    },
+    {
+      id: 2,
+      loading,
+      error,
+      shelfTitle: "Want to read",
+      books: state.results.filter((book) => book.shelf === "wantToRead"),
+    },
+    {
+      id: 3,
+      loading,
+      error,
+      shelfTitle: "Read",
+      books: state.results.filter((book) => book.shelf === "read"),
+    },
   ]
-  const [books, setBooks] = useState([])
-  const [currentlyReading, setCurrentlyReading] = useState([])
-  const [wantToRead, setWantToRead] = useState([])
-  const [read, setRead] = useState([])
   // state = {
   //   /**
   //    * TODO: Instead of using this state variable to keep track of which page
@@ -30,15 +45,6 @@ const App = () => {
   //   }
   //   BooksAPI.getAll()
   // }
-  useEffect(() => {
-    BooksAPI.getAll()
-    let books = []
-    const fetching = async () => {
-      books = await BooksAPI.getAll()
-    }
-
-    console.log(books)
-  }, [])
 
   return (
     <div className="app">
@@ -51,12 +57,10 @@ const App = () => {
             return (
               <Shelf
                 key={shelf.id}
+                loading={shelf.loading}
+                error={shelf.error}
                 shelfTitle={shelf.shelfTitle}
-                books={[
-                  { title: "Daci", author: "salah" },
-                  { title: "Daci", author: "salah" },
-                  { title: "Daci", author: "salah" },
-                ]}
+                books={shelf.books}
               />
             )
           })}
