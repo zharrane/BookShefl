@@ -1,15 +1,19 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import * as BooksAPI from "./BooksAPI"
 import "./App.css"
 import Shelf from "./components/Shelf"
 import { Link } from "react-router-dom"
 
-const BooksApp = () => {
+const App = () => {
   const shelves = [
-    { id: 1, title: "Currently reading", books: [] },
-    { id: 2, title: "Want to read", books: [] },
-    { id: 3, title: "Read", books: [] },
+    { id: 1, shelfTitle: "Currently reading", books: [] },
+    { id: 2, shelfTitle: "Want to read", books: [] },
+    { id: 3, shelfTitle: "Read", books: [] },
   ]
+  const [books, setBooks] = useState([])
+  const [currentlyReading, setCurrentlyReading] = useState([])
+  const [wantToRead, setWantToRead] = useState([])
+  const [read, setRead] = useState([])
   // state = {
   //   /**
   //    * TODO: Instead of using this state variable to keep track of which page
@@ -26,14 +30,16 @@ const BooksApp = () => {
   //   }
   //   BooksAPI.getAll()
   // }
-  const all = async () => {
-    // await console.log(BooksAPI.getAll())
-    // await console.log(BooksAPI.search("Lord"))
-    // await console.log(BooksAPI.search("1773"))
-  }
+  useEffect(() => {
+    BooksAPI.getAll()
+    let books = []
+    const fetching = async () => {
+      books = await BooksAPI.getAll()
+    }
 
-  console.log(BooksAPI.search("iOS"))
-  all()
+    console.log(books)
+  }, [])
+
   return (
     <div className="app">
       <div className="list-books">
@@ -41,21 +47,19 @@ const BooksApp = () => {
           <h1>MyReads</h1>
         </div>
         <div className="list-books-content">
-          <div>
-            {shelves.map((shelf) => {
-              return (
-                <Shelf
-                  key={shelf.id}
-                  title={shelf.title}
-                  books={[
-                    { title: "Daci", author: "salah" },
-                    { title: "Daci", author: "salah" },
-                    { title: "Daci", author: "salah" },
-                  ]}
-                />
-              )
-            })}
-          </div>
+          {shelves.map((shelf) => {
+            return (
+              <Shelf
+                key={shelf.id}
+                shelfTitle={shelf.shelfTitle}
+                books={[
+                  { title: "Daci", author: "salah" },
+                  { title: "Daci", author: "salah" },
+                  { title: "Daci", author: "salah" },
+                ]}
+              />
+            )
+          })}
         </div>
         <div className="open-search">
           <Link to="/search">
@@ -67,4 +71,4 @@ const BooksApp = () => {
   )
 }
 
-export default BooksApp
+export default App

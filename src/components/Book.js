@@ -1,6 +1,6 @@
 import React from "react"
 import NoImage from "../images/no_image.jpg"
-const Book = ({ title = "", autor = "", backgroundImage = NoImage }) => {
+const Book = ({ title = "", bookAuthor = "", backgroundImage = NoImage }) => {
   return (
     <div className="book">
       <div className="book-top">
@@ -27,7 +27,7 @@ const Book = ({ title = "", autor = "", backgroundImage = NoImage }) => {
         </div>
       </div>
       <div className="book-title">{title}</div>
-      <div className="book-authors">{autor}</div>
+      <div className="book-authors">{bookAuthor}</div>
     </div>
   )
 }

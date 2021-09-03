@@ -27,12 +27,23 @@ export const get = async (bookId) => {
 //   fetch(`${api}/books`, { headers })
 //     .then((res) => res.json())
 //     .then((data) => data.books)
-///////////////////
+// /////////////////
+// export const getAll = async () => {
+//   const res = await fetch(`${api}/books`, { headers })
+//   const result = await res.json()
+//   const books = await result.books
+//   return await books
+// }
+///////////////////////
 export const getAll = async () => {
-  const res = await fetch(`${api}/books`, { headers })
-  const result = await res.json()
+  const endpoint = `${api}/books`
+  const result = await await (await fetch(endpoint, { headers })).json()
   console.log(result.books)
-  return result
+  return result.books
+  // const res = await fetch(`${api}/books`, { headers })
+  // const result = await res.json()
+  // const books = await result.books
+  // return await books
 }
 
 // export const update = (book, shelf) =>
